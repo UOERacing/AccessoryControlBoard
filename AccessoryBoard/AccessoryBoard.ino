@@ -8,6 +8,10 @@
 // set pin numbers:
 const int leftInput = PUSH1; // 34; // p4.3 on board // 
 const int rightInput = PUSH2; // 35; // p1.2 on board // 
+
+const int leftInputWheel = 34; //
+const int rightInputWheel = 35; //
+
 const int hazardInput =  31; // p8.2 on board // PUSH2; //
 const int leftOut =   39; // p2.4 on board //  GREEN_LED; // 
 const int rightOut =   40; // p2.5 on board // RED_LED; // 
@@ -15,6 +19,10 @@ const int rightOut =   40; // p2.5 on board // RED_LED; //
 // variables to read high/low input
 int leftState = 0;
 int rightState = 0;
+
+int leftStateWheel = 0;
+int rightStateWheel = 0;
+
 int hazardState = 0;
 
 void setup() {
@@ -26,6 +34,11 @@ void setup() {
   // pin inputs
   pinMode(leftInput,INPUT_PULLUP);
   pinMode(rightInput, INPUT_PULLUP);
+
+  pinMode(leftInputWheel, INPUT_PULLUP);
+  pinMode(rightInputWheel, INPUT_PULLUP);
+
+  
   pinMode(hazardInput, INPUT);
    
 }
@@ -34,6 +47,10 @@ void loop(){
   
   leftState  = digitalRead(leftInput);
   rightState = digitalRead(rightInput);
+
+  leftStateWheel = digitalRead(leftInputWheel);
+  rightStateWheel = digitalRead(leftInputWheel);
+  
   hazardState = digitalRead(hazardInput);
   
 // Hazard Lights - only pull low if both leftState and rightState are low as well
@@ -53,9 +70,9 @@ void loop(){
   }
 
   // Left Signal
-  if (leftState == HIGH){
+  if (leftState == HIGH || leftStateWheel == LOW){
     digitalWrite(leftOut,LOW);
-  }else if (leftState == LOW){
+  }else if (leftState == LOW || leftStateWheel == HIGH){
     // blink logic
     digitalWrite(leftOut,HIGH);
     delay(300);
@@ -64,9 +81,9 @@ void loop(){
   }
 
   // Right Signal
-  if (rightState == HIGH){
+  if (rightState == HIGH || rightStateWheel == LOW){
     digitalWrite(rightOut,LOW);
-  }else if (rightState == LOW){
+  }else if (rightState == LOW || rightStateWheel == HIGH){
     // blink logic
     digitalWrite(rightOut,HIGH);
     delay(300);
