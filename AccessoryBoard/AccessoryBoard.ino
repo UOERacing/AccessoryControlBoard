@@ -35,7 +35,6 @@ void loop(){
   leftState  = digitalRead(leftInput);
   rightState = digitalRead(rightInput);
   hazardState = digitalRead(hazardInput);
-  //digitalWrite(rightOut,LOW);
   
 // Hazard Lights - only pull low if both leftState and rightState are low as well
   if (hazardState == LOW && leftState == HIGH && rightState  == HIGH){
@@ -52,8 +51,6 @@ void loop(){
     delay(300);
     return;
   }
-
-  // Still need to get left + right signal working on car
 
   // Left Signal
   if (leftState == HIGH){
