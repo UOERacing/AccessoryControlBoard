@@ -38,34 +38,36 @@ void loop(){
   //digitalWrite(rightOut,LOW);
   
 // Hazard Lights
-//  if (hazardState == LOW){
-//    digitalWrite(leftOut,LOW);
-//    digitalWrite(rightOut,LOW);
-//  }else if (hazardState == HIGH){
-//    // blink logic
-//    digitalWrite(leftOut,HIGH);
-//    digitalWrite(rightOut,HIGH);
-//    delay(300);
-//    digitalWrite(leftOut,LOW);
-//    digitalWrite(rightOut,LOW);
-//    delay(300);
-//  }
-
-  // Left Signal
-  if (leftState == HIGH){
+  if (hazardState == LOW){
     digitalWrite(leftOut,LOW);
-  }else if (leftState == LOW){
+    digitalWrite(rightOut,LOW);
+  }else if (hazardState == HIGH){
     // blink logic
     digitalWrite(leftOut,HIGH);
+    digitalWrite(rightOut,HIGH);
+    delay(300);
+    digitalWrite(leftOut,LOW);
+    digitalWrite(rightOut,LOW);
+    delay(300);
   }
 
+  // Still need to get left + right signal working on car
+
+  // Left Signal
+//  if (leftState == HIGH){
+//    digitalWrite(leftOut,LOW);
+//  }else if (leftState == LOW){
+//    // blink logic
+//    digitalWrite(leftOut,HIGH);
+//  }
+
   // Right Signal
-  if (rightState == HIGH){
-    digitalWrite(rightOut,LOW);
-  }else if (rightState == LOW){
-    // blink logic
-    digitalWrite(rightOut,HIGH);
-  }
+//  if (rightState == HIGH){
+//    digitalWrite(rightOut,LOW);
+//  }else if (rightState == LOW){
+//    // blink logic
+//    digitalWrite(rightOut,HIGH);
+//  }
   
     
 //  else if (leftState == HIGH){
