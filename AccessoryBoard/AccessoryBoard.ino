@@ -35,8 +35,8 @@ void setup() {
   pinMode(leftInput,INPUT_PULLUP);
   pinMode(rightInput, INPUT_PULLUP);
 
-  pinMode(leftInputWheel, INPUT_PULLUP);
-  pinMode(rightInputWheel, INPUT_PULLUP);
+  pinMode(leftInputWheel, INPUT);
+  pinMode(rightInputWheel, INPUT);
 
   
   pinMode(hazardInput, INPUT);
