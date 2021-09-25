@@ -6,11 +6,11 @@
 
 // constants won't change. They're used here to 
 // set pin numbers:
-const int leftInput = PUSH1; // 34; // p4.3 on board // 
-const int rightInput = PUSH2; // 35; // p1.2 on board // 
+const int leftInput = PUSH1; 
+const int rightInput = PUSH2; 
 
-const int leftInputWheel = 34; //
-const int rightInputWheel = 35; //
+const int leftInputWheel = 34; // 34; // p4.3 on board // 
+const int rightInputWheel = 35; // 35; // p1.2 on board // 
 
 const int hazardInput =  31; // p8.2 on board // PUSH2; //
 const int leftOut =   39; // p2.4 on board //  GREEN_LED; // 
