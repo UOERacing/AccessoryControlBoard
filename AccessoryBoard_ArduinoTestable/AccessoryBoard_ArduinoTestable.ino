@@ -1,5 +1,6 @@
 // Authors:
 // Louis-Philippe St-Arnaud, Omar Hayat, Kian Bazarjani
+// This is a test file used by Louis-Philippe on an Arduino breadboard test platform with LEDs, so pin numbers will not match
 // DESCRIPTION:
 //    Accessory component functionality for prototype vehicle to be used in Shell Eco-Marathon Competition
 //    This code is for Texas Instruments MSP-EXP430F5529LP boards, compiled in energia.
@@ -7,12 +8,12 @@
 // These constants won't change. They're used here to 
 // set pin numbers (see accessory board documentation):
 
-const int leftInputWheel = P4_3; // Flasher input on steering, left
-const int rightInputWheel = P1_2; // Flasher input on steering, right
+const int leftInputWheel = 4; // Flasher input on steering, left
+const int rightInputWheel = 3; // Flasher input on steering, right
 
-const int hazardInput = P8_2; // Hazards button on steering
-const int leftOut = P2_4; // Output pin for left flashers
-const int rightOut = P2_5; // Output pin for right flashers
+const int hazardInput = 8; // Hazards button on steering
+const int leftOut = 12; // Output pin for left flashers
+const int rightOut = 11; // Output pin for right flashers
 
 // State variables
 int leftStateWheel = LOW;
