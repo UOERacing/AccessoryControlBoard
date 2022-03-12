@@ -7,9 +7,11 @@
 //Version info :
   //V1 (22/02/2022) : Basic testing of angular velocity calculations using a push button, a digital pin and interrupts.
   //                  Reading accuracy still needs to be tested.
-  //                  Sometimes bad readings are NOT filetered out, and the solution for that has not been found.
+  /*V2 (26/02/2022) : Added oldspeed variable for keeping track of speed changes and filtering out unrealistic values.
+                      Sometimes bad readings are NOT filetered out, and the solution for that has not been found.
   //                  However, the driver will know when a reading is bad because it jumps back to a good reading very
-  //                  quickly.
+  //                  quickly. Tested with an Arduino Uno hooked up to the car's hall sensor. Readings were also obtained
+  //                  with the TI board but not very successful.*/
 /*-------------------------------------------------------------------------------------------------------------------*/
 //Constants and pin numbers :
 const int hallPin = P1_3; //Pin which goes HIGH when the magnetised bolt passes in front of the sensor. Make sure it can use an interrupt.
