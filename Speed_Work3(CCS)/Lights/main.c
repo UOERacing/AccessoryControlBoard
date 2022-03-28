@@ -122,7 +122,7 @@ int main(void)
 
       // This function does the actual blinking
       void blinkLeft(){
-          if (elasped_millis - previousMillisRight >= interval){
+          if (elasped_millis - previousMillisLeft >= interval){
           previousMillisLeft = elasped_millis;
           if (ledStateLeft == GPIO_INPUT_PIN_LOW){
               ledStateLeft = GPIO_INPUT_PIN_HIGH;
