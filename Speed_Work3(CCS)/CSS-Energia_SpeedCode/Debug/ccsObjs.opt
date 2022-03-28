@@ -1,0 +1,1 @@
+"./CSS-Energia_SpeedCode.o" -Wl,--start-group -lmsp430_MSP-EXP430F5529LP_core -lm -Wl,--end-group 
