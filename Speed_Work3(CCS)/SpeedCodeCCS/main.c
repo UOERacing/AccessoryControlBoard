@@ -1,11 +1,10 @@
-#include <msp430.h> 
-#include <driverlib.h>
-#include <milliSecond_timer.h>
-#include <milliSecond_timer.c>
-#include <gpio.h>
-#include <gpio.c>
-#include <timer_a.c>
-#include <timer_a.h>
+#include "msp430.h"
+#include "driverlib.h"
+#include "milliSecond_timer.h"
+//screen includes
+#include "ssd1306.h"
+#include "i2c.h"
+#include "clock.h"
 // Authors :
 // Louis-Philippe St-Arnaud
 // DESCRIPTION :
@@ -25,6 +24,8 @@
 
 /*-------------------------------------------------------------------------------------------------------------------*/
 //Constants and pin numbers :
+#define TIMER_PORT GPIO_PORT_P1
+#define TIMER_PIN GPIO_PIN4
 #define HALL_PORT GPIO_PORT_P1 //Temporarily switched to button 1 port
 #define HALL_PIN  GPIO_PIN1 //Pin P1_3, which goes HIGH when the magnetized bolt passes in front of the sensor. Make sure it can use an interrupt.
 const int bounce_duration = 20; //Estimated button bounce duration for software debouncing in milliseconds
@@ -144,5 +145,21 @@ void zeroReset(){
 /*------Display speed-----*/
 //This function prints the current speed to the serial monitor (and eventually the LCD).
   void displaySpeed(){
- //Empty for now
+
+  }
+  void timer(){
+      //Include commands for starting a timer based on button presses and lap counts (Pin 1.4 is timer reset button)
+      //Reset lap count when pressed down for 3 seconds
+      int timerPinState;
+      unsigned long startMillis;
+      unsigned long displayMillis;
+      unsigned long displaySeconds;
+      timerPinState = GPIO_getInputPinValue(TIMER_PORT,TIMER_PIN);
+      if (timerPinState == GPIO_INPUT_PIN_HIGH){
+          startMillis = elasped_millis;
+          //add some sort of lap keeping function and 3 second press reset
+      }
+      displayMillis = elasped_millis - startMillis;
+      displaySeconds = displayMillis/1000;
+      //fun screen functions
   }
