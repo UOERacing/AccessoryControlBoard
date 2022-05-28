@@ -1,7 +1,7 @@
 ******************************************************************************
                   MSP430 Linker PC v21.6.0                     
 ******************************************************************************
->> Linked Sun Mar 27 20:31:10 2022
+>> Linked Wed Apr  6 00:19:25 2022
 
 OUTPUT FILE NAME:   <Lights.out>
 ENTRY POINT SYMBOL: "_c_int00_noargs"  address: 00004400
@@ -19,8 +19,8 @@ MEMORY CONFIGURATION
   INFOB                 00001900   00000080  00000000  00000080  RWIX
   INFOA                 00001980   00000080  00000000  00000080  RWIX
   USBRAM                00001c00   00000800  00000000  00000800  RWIX
-  RAM                   00002400   00002000  000000bc  00001f44  RWIX
-  FLASH                 00004400   0000bb80  00000076  0000bb0a  RWIX
+  RAM                   00002400   00002000  000000c2  00001f3e  RWIX
+  FLASH                 00004400   0000bb80  00000088  0000baf8  RWIX
   INT00                 0000ff80   00000002  00000000  00000002  RWIX
   INT01                 0000ff82   00000002  00000000  00000002  RWIX
   INT02                 0000ff84   00000002  00000000  00000002  RWIX
@@ -85,7 +85,7 @@ MEMORY CONFIGURATION
   INT61                 0000fffa   00000002  00000002  00000000  RWIX
   INT62                 0000fffc   00000002  00000002  00000000  RWIX
   RESET                 0000fffe   00000002  00000002  00000000  RWIX
-  FLASH2                00010000   000143f8  00000428  00013fd0  RWIX
+  FLASH2                00010000   000143f8  00000590  00013e68  RWIX
 
 
 SECTION ALLOCATION MAP
@@ -97,6 +97,11 @@ section   page    origin      length       input sections
                   00002400    00000018     main.obj (.data)
                   00002418    00000004     milliSecond_timer.obj (.data)
 
+.bss       0    0000241c    00000006     UNINITIALIZED
+                  0000241c    00000002     (.common:sumHazard)
+                  0000241e    00000002     (.common:sumLeft)
+                  00002420    00000002     (.common:sumRight)
+
 .stack     0    00004360    000000a0     UNINITIALIZED
                   00004360    00000004     rts430x_lc_rd_eabi.lib : boot.c.obj (.stack)
                   00004364    0000009c     --HOLE--
@@ -107,10 +112,11 @@ section   page    origin      length       input sections
                   0000441c    00000010     milliSecond_timer.obj (.text:_isr:Timer_interupt)
                   0000442c    00000008     rts430x_lc_rd_eabi.lib : isr_trap.asm.obj (.text:_isr:__TI_ISR_TRAP)
 
-.cinit     0    0000445e    00000018     
-                  0000445e    00000008     (.cinit..data.load) [load image, compression = lzss]
-                  00004466    00000008     (__TI_handler_table)
-                  0000446e    00000008     (__TI_cinit_table)
+.cinit     0    0000445e    0000002a     
+                  0000445e    0000000c     (__TI_handler_table)
+                  0000446a    00000008     (.cinit..data.load) [load image, compression = lzss]
+                  00004472    00000006     (.cinit..bss.load) [load image, compression = zero_init]
+                  00004478    00000010     (__TI_cinit_table)
 
 .binit     0    00004400    00000000     
 
@@ -198,37 +204,42 @@ SYSNMI     0    0000fffc    00000002
 .reset     0    0000fffe    00000002     
                   0000fffe    00000002     rts430x_lc_rd_eabi.lib : boot.c.obj (.reset)
 
-.text      0    00010000    00000428     
-                  00010000    00000080     main.obj (.text:updateBlinkers)
-                  00010080    0000007c     timer_a.obj (.text:Timer_A_initUpMode)
-                  000100fc    00000076     rts430x_lc_rd_eabi.lib : copy_decompress_lzss.c.obj (.text:decompress:lzss:__TI_decompress_lzss)
-                  00010172    0000005e     main.obj (.text:blinkHazards)
-                  000101d0    00000054     rts430x_lc_rd_eabi.lib : autoinit.c.obj (.text:__TI_auto_init_nobinit_nopinit_hold_wdt:__TI_auto_init_nobinit_nopinit_hold_wdt)
-                  00010224    0000004a     main.obj (.text:blinkLeft)
-                  0001026e    0000004a     main.obj (.text:blinkRight)
-                  000102b8    00000038     main.obj (.text:setup)
-                  000102f0    00000034     gpio.obj (.text:GPIO_setAsInputPin)
-                  00010324    00000028     gpio.obj (.text:GPIO_setAsOutputPin)
-                  0001034c    00000022     milliSecond_timer.obj (.text:setup_millisecond_timer)
-                  0001036e    00000020     wdt_a.obj (.text:WDT_A_hold)
-                  0001038e    0000001c     gpio.obj (.text:GPIO_getInputPinValue)
-                  000103aa    0000001c     gpio.obj (.text:GPIO_setOutputHighOnPin)
-                  000103c6    0000001c     gpio.obj (.text:GPIO_setOutputLowOnPin)
-                  000103e2    00000014     main.obj (.text:main)
-                  000103f6    00000014     rts430x_lc_rd_eabi.lib : memcpy.c.obj (.text:memcpy)
-                  0001040a    00000012                            : copy_decompress_none.c.obj (.text:decompress:none:__TI_decompress_none)
-                  0001041c    00000006                            : exit.c.obj (.text:abort)
-                  00010422    00000004                            : pre_init.c.obj (.text:_system_pre_init)
-                  00010426    00000002                            : startup.c.obj (.text:_system_post_cinit)
+.text      0    00010000    00000590     
+                  00010000    00000102     main.obj (.text:updateBlinkers)
+                  00010102    0000007c     timer_a.obj (.text:Timer_A_initUpMode)
+                  0001017e    00000076     rts430x_lc_rd_eabi.lib : copy_decompress_lzss.c.obj (.text:decompress:lzss:__TI_decompress_lzss)
+                  000101f4    0000005e     main.obj (.text:blinkHazards)
+                  00010252    00000054     rts430x_lc_rd_eabi.lib : autoinit.c.obj (.text:__TI_auto_init_nobinit_nopinit_hold_wdt:__TI_auto_init_nobinit_nopinit_hold_wdt)
+                  000102a6    0000004a     main.obj (.text:blinkLeft)
+                  000102f0    0000004a     main.obj (.text:blinkRight)
+                  0001033a    0000004a     rts430x_lc_rd_eabi.lib : fs_cmp.asm.obj (.text)
+                  00010384    00000038     main.obj (.text:setup)
+                  000103bc    00000036     rts430x_lc_rd_eabi.lib : fs_itof.asm.obj (.text)
+                  000103f2    00000034     gpio.obj (.text:GPIO_setAsInputPin)
+                  00010426    0000002c     rts430x_lc_rd_eabi.lib : div16s.asm.obj (.text)
+                  00010452    00000028     gpio.obj (.text:GPIO_setAsOutputPin)
+                  0001047a    00000024     rts430x_lc_rd_eabi.lib : copy_zero_init.c.obj (.text:decompress:ZI:__TI_zero_init_nomemset:__TI_zero_init_nomemset)
+                  0001049e    00000022     milliSecond_timer.obj (.text:setup_millisecond_timer)
+                  000104c0    00000020     wdt_a.obj (.text:WDT_A_hold)
+                  000104e0    0000001c     gpio.obj (.text:GPIO_getInputPinValue)
+                  000104fc    0000001c     gpio.obj (.text:GPIO_setOutputHighOnPin)
+                  00010518    0000001c     gpio.obj (.text:GPIO_setOutputLowOnPin)
+                  00010534    00000016     rts430x_lc_rd_eabi.lib : div16u.asm.obj (.text)
+                  0001054a    00000014     main.obj (.text:main)
+                  0001055e    00000014     rts430x_lc_rd_eabi.lib : memcpy.c.obj (.text:memcpy)
+                  00010572    00000012                            : copy_decompress_none.c.obj (.text:decompress:none:__TI_decompress_none)
+                  00010584    00000006                            : exit.c.obj (.text:abort)
+                  0001058a    00000004                            : pre_init.c.obj (.text:_system_pre_init)
+                  0001058e    00000002                            : startup.c.obj (.text:_system_post_cinit)
 
 MODULE SUMMARY
 
        Module                       code   ro data   rw data
        ------                       ----   -------   -------
     .\
-       main.obj                     446    0         24     
+       main.obj                     576    0         30     
     +--+----------------------------+------+---------+---------+
-       Total:                       446    0         24     
+       Total:                       576    0         30     
                                                             
     .\MSP430-HelpfulFunctions\
        milliSecond_timer.obj        50     16        4      
@@ -245,7 +256,12 @@ MODULE SUMMARY
     C:\ti\ccs1110\ccs\tools\compiler\ti-cgt-msp430_21.6.0.LTS\lib\rts430x_lc_rd_eabi.lib
        copy_decompress_lzss.c.obj   118    0         0      
        autoinit.c.obj               84     0         0      
+       fs_cmp.asm.obj               74     0         0      
+       fs_itof.asm.obj              54     0         0      
+       div16s.asm.obj               44     0         0      
+       copy_zero_init.c.obj         36     0         0      
        boot.c.obj                   28     2         0      
+       div16u.asm.obj               22     0         0      
        memcpy.c.obj                 20     0         0      
        copy_decompress_none.c.obj   18     0         0      
        isr_trap.asm.obj             8      0         0      
@@ -274,25 +290,27 @@ MODULE SUMMARY
        int62.asm.obj                0      2         0      
        startup.c.obj                2      0         0      
     +--+----------------------------+------+---------+---------+
-       Total:                       288    44        0      
+       Total:                       518    44        0      
                                                             
        Stack:                       0      0         160    
-       Linker Generated:            0      24        0      
+       Linker Generated:            0      42        0      
     +--+----------------------------+------+---------+---------+
-       Grand Total:                 1116   112       188    
+       Grand Total:                 1476   130       194    
 
 
 LINKER GENERATED COPY TABLES
 
-__TI_cinit_table @ 0000446e records: 1, size/record: 8, table size: 8
-	.data: load addr=0000445e, load size=00000008 bytes, run addr=00002400, run size=0000001c bytes, compression=lzss
+__TI_cinit_table @ 00004478 records: 2, size/record: 8, table size: 16
+	.data: load addr=0000446a, load size=00000008 bytes, run addr=00002400, run size=0000001c bytes, compression=lzss
+	.bss: load addr=00004472, load size=00000006 bytes, run addr=0000241c, run size=00000006 bytes, compression=zero_init
 
 
 LINKER GENERATED HANDLER TABLE
 
-__TI_handler_table @ 00004466 records: 2, size/record: 4, table size: 8
-	index: 0, handler: __TI_decompress_lzss
-	index: 1, handler: __TI_decompress_none
+__TI_handler_table @ 0000445e records: 3, size/record: 4, table size: 12
+	index: 0, handler: __TI_zero_init
+	index: 1, handler: __TI_decompress_lzss
+	index: 2, handler: __TI_decompress_none
 
 
 GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name 
@@ -381,7 +399,7 @@ address   name
 00000732  ADC12MEM9                              
 00000733  ADC12MEM9_H                            
 00000732  ADC12MEM9_L                            
-0001041c  C$$EXIT                                
+00010584  C$$EXIT                                
 000008c0  CBCTL0                                 
 000008c1  CBCTL0_H                               
 000008c0  CBCTL0_L                               
@@ -449,11 +467,11 @@ address   name
 00000146  FCTL4                                  
 00000147  FCTL4_H                                
 00000146  FCTL4_L                                
-0001038e  GPIO_getInputPinValue                  
-000102f0  GPIO_setAsInputPin                     
-00010324  GPIO_setAsOutputPin                    
-000103aa  GPIO_setOutputHighOnPin                
-000103c6  GPIO_setOutputLowOnPin                 
+000104e0  GPIO_getInputPinValue                  
+000103f2  GPIO_setAsInputPin                     
+00010452  GPIO_setAsOutputPin                    
+000104fc  GPIO_setOutputHighOnPin                
+00010518  GPIO_setOutputLowOnPin                 
 000004c4  MAC                                    
 000004da  MAC32H                                 
 000004db  MAC32H_H                               
@@ -797,7 +815,7 @@ address   name
 000003e0  TB0EX0                                 
 000003ee  TB0IV                                  
 000003d0  TB0R                                   
-00010080  Timer_A_initUpMode                     
+00010102  Timer_A_initUpMode                     
 0000441c  Timer_interupt                         
 000005d0  UCA0ABCTL                              
 000005c6  UCA0BRW                                
@@ -1037,18 +1055,18 @@ address   name
 0000015c  WDTCTL                                 
 0000015d  WDTCTL_H                               
 0000015c  WDTCTL_L                               
-0001036e  WDT_A_hold                             
+000104c0  WDT_A_hold                             
 00004400  __STACK_END                            
 000000a0  __STACK_SIZE                           
-0000446e  __TI_CINIT_Base                        
-00004476  __TI_CINIT_Limit                       
-00004476  __TI_CINIT_Warm                        
-00004466  __TI_Handler_Table_Base                
-0000446e  __TI_Handler_Table_Limit               
+00004478  __TI_CINIT_Base                        
+00004488  __TI_CINIT_Limit                       
+00004488  __TI_CINIT_Warm                        
+0000445e  __TI_Handler_Table_Base                
+0000446a  __TI_Handler_Table_Limit               
 0000442c  __TI_ISR_TRAP                          
-000101d0  __TI_auto_init_nobinit_nopinit_hold_wdt
-000100fc  __TI_decompress_lzss                   
-0001040a  __TI_decompress_none                   
+00010252  __TI_auto_init_nobinit_nopinit_hold_wdt
+0001017e  __TI_decompress_lzss                   
+00010572  __TI_decompress_none                   
 0000ffd2  __TI_int41                             
 0000ffd4  __TI_int42                             
 0000ffd6  __TI_int43                             
@@ -1074,16 +1092,23 @@ address   name
 ffffffff  __TI_pprof_out_hndl                    
 ffffffff  __TI_prof_data_size                    
 ffffffff  __TI_prof_data_start                   
+0001047a  __TI_zero_init_nomemset                
 ffffffff  __c_args__                             
+0001033a  __mspabi_cmpf                          
+00010426  __mspabi_divi                          
+00010534  __mspabi_divu                          
+000103bc  __mspabi_fltif                         
+00010426  __mspabi_remi                          
+00010534  __mspabi_remu                          
 00004400  _c_int00_noargs                        
 0000fffe  _reset_vector                          
 00004360  _stack                                 
-00010426  _system_post_cinit                     
-00010422  _system_pre_init                       
-0001041c  abort                                  
-00010172  blinkHazards                           
-00010224  blinkLeft                              
-0001026e  blinkRight                             
+0001058e  _system_post_cinit                     
+0001058a  _system_pre_init                       
+00010584  abort                                  
+000101f4  blinkHazards                           
+000102a6  blinkLeft                              
+000102f0  blinkRight                             
 00002418  elasped_millis                         
 0000240a  hazardState                            
 00002408  ledStateHazards                        
@@ -1091,14 +1116,17 @@ ffffffff  __c_args__
 00002406  ledStateRight                          
 00002400  leftStateWheel                         
 00010000  loop                                   
-000103e2  main                                   
-000103f6  memcpy                                 
+0001054a  main                                   
+0001055e  memcpy                                 
 0000240c  previousMillisHazards                  
 00002410  previousMillisLeft                     
 00002414  previousMillisRight                    
 00002402  rightStateWheel                        
-000102b8  setup                                  
-0001034c  setup_millisecond_timer                
+00010384  setup                                  
+0001049e  setup_millisecond_timer                
+0000241c  sumHazard                              
+0000241e  sumLeft                                
+00002420  sumRight                               
 00010000  updateBlinkers                         
 
 
@@ -1847,16 +1875,19 @@ address   name
 00002410  previousMillisLeft                     
 00002414  previousMillisRight                    
 00002418  elasped_millis                         
+0000241c  sumHazard                              
+0000241e  sumLeft                                
+00002420  sumRight                               
 00004360  _stack                                 
 00004400  __STACK_END                            
 00004400  _c_int00_noargs                        
 0000441c  Timer_interupt                         
 0000442c  __TI_ISR_TRAP                          
-00004466  __TI_Handler_Table_Base                
-0000446e  __TI_CINIT_Base                        
-0000446e  __TI_Handler_Table_Limit               
-00004476  __TI_CINIT_Limit                       
-00004476  __TI_CINIT_Warm                        
+0000445e  __TI_Handler_Table_Base                
+0000446a  __TI_Handler_Table_Limit               
+00004478  __TI_CINIT_Base                        
+00004488  __TI_CINIT_Limit                       
+00004488  __TI_CINIT_Warm                        
 0000ffd2  __TI_int41                             
 0000ffd4  __TI_int42                             
 0000ffd6  __TI_int43                             
@@ -1882,30 +1913,37 @@ address   name
 0000fffe  _reset_vector                          
 00010000  loop                                   
 00010000  updateBlinkers                         
-00010080  Timer_A_initUpMode                     
-000100fc  __TI_decompress_lzss                   
-00010172  blinkHazards                           
-000101d0  __TI_auto_init_nobinit_nopinit_hold_wdt
-00010224  blinkLeft                              
-0001026e  blinkRight                             
-000102b8  setup                                  
-000102f0  GPIO_setAsInputPin                     
-00010324  GPIO_setAsOutputPin                    
-0001034c  setup_millisecond_timer                
-0001036e  WDT_A_hold                             
-0001038e  GPIO_getInputPinValue                  
-000103aa  GPIO_setOutputHighOnPin                
-000103c6  GPIO_setOutputLowOnPin                 
-000103e2  main                                   
-000103f6  memcpy                                 
-0001040a  __TI_decompress_none                   
-0001041c  C$$EXIT                                
-0001041c  abort                                  
-00010422  _system_pre_init                       
-00010426  _system_post_cinit                     
+00010102  Timer_A_initUpMode                     
+0001017e  __TI_decompress_lzss                   
+000101f4  blinkHazards                           
+00010252  __TI_auto_init_nobinit_nopinit_hold_wdt
+000102a6  blinkLeft                              
+000102f0  blinkRight                             
+0001033a  __mspabi_cmpf                          
+00010384  setup                                  
+000103bc  __mspabi_fltif                         
+000103f2  GPIO_setAsInputPin                     
+00010426  __mspabi_divi                          
+00010426  __mspabi_remi                          
+00010452  GPIO_setAsOutputPin                    
+0001047a  __TI_zero_init_nomemset                
+0001049e  setup_millisecond_timer                
+000104c0  WDT_A_hold                             
+000104e0  GPIO_getInputPinValue                  
+000104fc  GPIO_setOutputHighOnPin                
+00010518  GPIO_setOutputLowOnPin                 
+00010534  __mspabi_divu                          
+00010534  __mspabi_remu                          
+0001054a  main                                   
+0001055e  memcpy                                 
+00010572  __TI_decompress_none                   
+00010584  C$$EXIT                                
+00010584  abort                                  
+0001058a  _system_pre_init                       
+0001058e  _system_post_cinit                     
 ffffffff  __TI_pprof_out_hndl                    
 ffffffff  __TI_prof_data_size                    
 ffffffff  __TI_prof_data_start                   
 ffffffff  __c_args__                             
 
-[801 symbols]
+[811 symbols]

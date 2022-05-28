@@ -2,9 +2,10 @@
 #include "driverlib.h"
 #include "milliSecond_timer.h"
 //screen includes
-#include "ssd1306.h"
+//#include "ssd1306.h"
 #include "i2c.h"
 #include "clock.h"
+//#include <stdio.h>
 // Authors :
 // Louis-Philippe St-Arnaud
 // DESCRIPTION :
@@ -26,9 +27,9 @@
 //Constants and pin numbers :
 #define TIMER_PORT GPIO_PORT_P1
 #define TIMER_PIN GPIO_PIN4
-#define HALL_PORT GPIO_PORT_P1 //Temporarily switched to button 1 port
-#define HALL_PIN  GPIO_PIN1 //Pin P1_3, which goes HIGH when the magnetized bolt passes in front of the sensor. Make sure it can use an interrupt.
-const int bounce_duration = 20; //Estimated button bounce duration for software debouncing in milliseconds
+#define HALL_PORT GPIO_PORT_P1
+#define HALL_PIN  GPIO_PIN3 //Pin P1_3, which goes HIGH when the magnetized bolt passes in front of the sensor. Make sure it can use an interrupt.
+const int bounce_duration = 50; //Estimated button bounce duration for software debouncing in milliseconds
 volatile unsigned long bounceTime=0; //Variable for debouncing for storing the bounce duration plus the current milliseconds.
 const double radius = 0.2667 ; //10.5 inches,  0.2667 meters
                             //More precision will be required to obtain accurate translational velocity results.
@@ -61,6 +62,7 @@ int main(void)
 {
 	WDTCTL = WDTPW | WDTHOLD;	// stop watchdog timer
 	setup();
+	//printf("wha\n");
 	while(1){
 	    loop();
 	}
@@ -72,7 +74,7 @@ void setup() {
 //Interrupt for hall sensor pin
   __enable_interrupt();//Enable all interrupts
   GPIO_enableInterrupt(HALL_PORT, HALL_PIN);
-  GPIO_selectInterruptEdge(HALL_PORT, HALL_PIN, GPIO_HIGH_TO_LOW_TRANSITION);//Set interrupt as falling
+  GPIO_selectInterruptEdge(HALL_PORT, HALL_PIN, GPIO_LOW_TO_HIGH_TRANSITION);//Set interrupt as falling
   //GPIO_clearInterrupt(HALL_PORT, HALL_PIN);
   setup_millisecond_timer();
 }
@@ -85,8 +87,9 @@ void loop() {
 /*--------Record time(ISR)-----------*/
 //Main interrupt vector. This function uses the interrupt to record the times at which the magnetised bolt passes the hall sensor and determines how it should
 // be stored (as initial or final time) based on the previous state.
-#pragma vector=PORT1_VECTOR
+/*#pragma vector=PORT1_VECTOR
 __interrupt void time_record(void){
+    if(){
     button_press = 1;
     if( elasped_millis > bounceTime) { //The time isn't recorded if the voltage hasn't had the time to stabilize since the last read.
     counter++;
@@ -100,8 +103,12 @@ __interrupt void time_record(void){
     bounceTime = elasped_millis + bounce_duration;//Add the bounce duration to the current milliseconds to prevent
                                             //recording a second button press too soon when looping back.
     }
+    }
+    if(){
+
+    }
     //Clear flag?
-}
+}*/
 /*-------Speed read----------*/
 //This function checks for an input from the hall sensor and obtains the time until the next input, which is the time for one rotation.
   void speedRead(){
@@ -132,14 +139,14 @@ void zeroReset(){
       speed = (1.00/((millisecondsPerRev*numberOfBolts)/1000.00))*2*pi ; //This part gives the angular velocity in radians/second.
       speed = speed*radius; //Multiplying radians/second times meters/radian yields meters/second.
       speed = speed*3.6; //Convert to km/h
-      if (speed > 0 && counter > 2 && (speed >= 50 || speed >= (oldspeed*2))){
+      //if (speed > 0 && counter > 2 && (speed >= 50 || speed >= (oldspeed*2))){
         //discard speed because of bounce
         pointInCycle=0;
-      } else {
+      //} else {
         oldspeed = speed;
         initialTime = finalTime; //Start a new cycle based on the previous final reading
         pointInCycle = 1;
-      }
+      //}
     }
   }
 /*------Display speed-----*/

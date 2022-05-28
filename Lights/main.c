@@ -27,6 +27,9 @@ int ledStateLeft = 0; // Holds the current state of the blinkers
 int ledStateRight = 0;
 int ledStateHazards = 0;
 int hazardState = 0;
+int sumRight;
+int sumLeft;
+int sumHazard;
 
 unsigned long previousMillisHazards = 0;
 unsigned long previousMillisLeft = 0;
@@ -82,15 +85,38 @@ int main(void)
     // This function reads the blinker state and
     void updateBlinkers() {
 
-        leftStateWheel = GPIO_getInputPinValue(leftInputWheelPort,leftInputWheelPin);
-        rightStateWheel = GPIO_getInputPinValue(rightInputWheelPort,rightInputWheelPin);
-        hazardState = GPIO_getInputPinValue(hazardInputPort,hazardInputPin);
+        //get many readings from pins
+        int ix;
+        sumLeft = 0;
+        sumRight = 0;
+        sumHazard = 0;
+        for (ix =0; ix<100; ix++){
+            sumLeft = sumLeft + GPIO_getInputPinValue(leftInputWheelPort,leftInputWheelPin);
+            sumRight = sumRight + GPIO_getInputPinValue(rightInputWheelPort,rightInputWheelPin);
+            sumHazard = sumHazard + GPIO_getInputPinValue(hazardInputPort,hazardInputPin);
+        }
 
-            if (leftStateWheel== GPIO_INPUT_PIN_LOW && rightStateWheel== GPIO_INPUT_PIN_LOW && hazardState== GPIO_INPUT_PIN_LOW){ //blinker not active
+        if(sumLeft/100 > 0.5){
+                        leftStateWheel= GPIO_INPUT_PIN_HIGH;
+                    } else {
+                        leftStateWheel = GPIO_INPUT_PIN_LOW;
+                    }
+        if (sumRight/100 > 0.5){
+                        rightStateWheel = GPIO_INPUT_PIN_HIGH;
+                    } else {
+                        rightStateWheel = GPIO_INPUT_PIN_LOW;
+                    }
+        if (sumHazard/100 > 0.5){
+                        hazardState = GPIO_INPUT_PIN_HIGH;
+                    } else {
+                        hazardState = GPIO_INPUT_PIN_LOW;
+                    }
+
+            /*if (leftStateWheel== GPIO_INPUT_PIN_LOW && rightStateWheel== GPIO_INPUT_PIN_LOW && hazardState== GPIO_INPUT_PIN_LOW){ //blinker not active
                ledStateLeft = GPIO_INPUT_PIN_LOW;
                ledStateRight = GPIO_INPUT_PIN_LOW;
                ledStateHazards = GPIO_INPUT_PIN_LOW;
-            }
+            }*/
             // Hazard Lights - only pull low if both leftState and rightState are low as well
              if (hazardState == GPIO_INPUT_PIN_HIGH){
                // Blink logic
@@ -102,7 +128,6 @@ int main(void)
                if (leftStateWheel == GPIO_INPUT_PIN_HIGH) { //Turn left signal on
                  // blink logic
                  blinkLeft();
-
 
                } else { //Turn left signal off
                    GPIO_setOutputLowOnPin(leftOutPort,leftOutPin);
